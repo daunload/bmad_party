@@ -1,0 +1,35 @@
+# Development docker-compose file
+# This includes PostgreSQL only - Next.js runs locally for better development experience
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: party-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: party_user
+      POSTGRES_PASSWORD: party_password
+      POSTGRES_DB: party_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      # Optional: Mount init scripts if needed
+      # - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U party_user -d party_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - party-dev-network
+
+volumes:
+  postgres_dev_data:
+    driver: local
+
+networks:
+  party-dev-network:
+    driver: bridge
+

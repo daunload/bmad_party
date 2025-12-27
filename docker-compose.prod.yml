@@ -1,0 +1,55 @@
+# Production docker-compose file
+# This includes both PostgreSQL and Next.js application
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: party-postgres-prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-party_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-party_password}
+      POSTGRES_DB: ${POSTGRES_DB:-party_db}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-party_user} -d ${POSTGRES_DB:-party_db}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - party-prod-network
+    # Optional: Add backup configuration
+    # command: postgres -c shared_preload_libraries=pg_stat_statements
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: party-app-prod
+    restart: always
+    environment:
+      POSTGRES_URL: postgresql://${POSTGRES_USER:-party_user}:${POSTGRES_PASSWORD:-party_password}@postgres:5432/${POSTGRES_DB:-party_db}?sslmode=disable
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      NODE_ENV: production
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - party-prod-network
+
+volumes:
+  postgres_prod_data:
+    driver: local
+
+networks:
+  party-prod-network:
+    driver: bridge
+

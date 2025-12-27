@@ -1,6 +1,16 @@
-# Next.js + PostgreSQL Auth Starter
+# Party - 파티 커뮤니티 플랫폼
 
-This is a [Next.js](https://nextjs.org/) starter kit that uses [NextAuth.js](https://next-auth.js.org/) for simple email + password login, [Drizzle](https://orm.drizzle.team) as the ORM, and a [Neon Postgres](https://vercel.com/postgres) database to persist the data.
+파티를 구하는 커뮤니티 앱입니다. 사용자들이 파티를 생성하고 참여하며, 평가 시스템을 통해 신뢰할 수 있는 커뮤니티를 구축합니다.
+
+## 기술 스택
+
+- **Framework**: [Next.js](https://nextjs.org/) 14 (App Router)
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: [Drizzle ORM](https://orm.drizzle.team)
+- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+- **Styling**: Tailwind CSS
+- **Deployment**: Vercel
 
 ## Deploy Your Own
 
@@ -16,15 +26,51 @@ You can clone & create this repo with the following command
 npx create-next-app nextjs-typescript-starter --example "https://github.com/vercel/nextjs-postgres-auth-starter"
 ```
 
-## Getting Started
+## 빠른 시작
 
-First, run the development server:
+### Docker를 사용한 개발 환경 설정 (권장)
 
-```bash
-pnpm dev
-```
+1. **Docker 환경 설정 스크립트 실행**:
+   ```bash
+   ./scripts/docker-setup.sh
+   ```
+   이 스크립트는 다음을 수행합니다:
+   - `.env.local` 파일 생성 (없는 경우)
+   - PostgreSQL Docker 컨테이너 시작
+   - 데이터베이스 마이그레이션 실행 (선택사항)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **수동 설정**:
+   ```bash
+   # PostgreSQL 컨테이너 시작
+   docker-compose -f docker-compose.dev.yml up -d
+   
+   # 환경 변수 설정 (.env.local 파일 생성)
+   POSTGRES_URL=postgresql://party_user:party_password@localhost:5432/party_db?sslmode=disable
+   AUTH_SECRET=$(openssl rand -base64 32)
+   AUTH_URL=http://localhost:3000
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   
+   # 마이그레이션 실행
+   npx tsx scripts/migrate-users-table.ts
+   npx tsx scripts/migrate-parties-table.ts
+   npx tsx scripts/migrate-party-participants-table.ts
+   npx tsx scripts/migrate-evaluations-table.ts
+   npx tsx scripts/migrate-admin-tables.ts
+   ```
+
+3. **개발 서버 실행**:
+   ```bash
+   npm run dev
+   ```
+
+4. **브라우저에서 접속**:
+   [http://localhost:3000](http://localhost:3000)
+
+### Docker 없이 개발하기
+
+PostgreSQL을 직접 설치하고 실행한 후, `.env.local` 파일에 연결 정보를 설정하세요.
+
+자세한 Docker 사용법은 [README.docker.md](./README.docker.md)를 참조하세요.
 
 ## Learn More
 
