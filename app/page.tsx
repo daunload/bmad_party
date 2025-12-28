@@ -54,22 +54,6 @@ export default function Page() {
                 무료로 시작하기
               </Link>
             </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 animate-fade-in">
-              <div>
-                <div className="text-3xl font-bold text-gray-900">100+</div>
-                <div className="mt-1 text-sm text-gray-600">활성 파티</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-gray-900">500+</div>
-                <div className="mt-1 text-sm text-gray-600">회원</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-gray-900">4.8</div>
-                <div className="mt-1 text-sm text-gray-600">평균 평점</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
