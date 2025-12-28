@@ -4,6 +4,7 @@ import { getEvaluationsReceived, getEvaluationsGiven } from '@/lib/db/evaluation
 import { getUserById } from '@/lib/db/users';
 import { getPartyById } from '@/lib/db/parties';
 import { EvaluationHistory } from '@/components/features/evaluation/EvaluationHistory';
+import Header from '@/components/layout/Header';
 
 export default async function EvaluationsPage() {
   const session = await auth();
@@ -61,42 +62,49 @@ export default async function EvaluationsPage() {
     : null;
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900">평가 이력</h1>
+    <div className="min-h-screen bg-white">
+      <Header />
+      
+      <div className="bg-gradient-to-br from-slate-50 via-blue-50/50 to-purple-50/50 py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <h1 className="mb-3 text-4xl font-bold text-gray-900">평가 이력</h1>
+            <p className="text-lg text-gray-600">받은 평가와 작성한 평가를 확인하세요</p>
+          </div>
 
-        {/* Statistics */}
-        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-4">
-          <div className="rounded-lg border border-gray-200 bg-white p-4">
-            <p className="text-sm text-gray-600">받은 평가</p>
-            <p className="mt-1 text-2xl font-bold text-gray-900">{totalReceived}</p>
+          {/* Statistics */}
+          <div className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-sm font-medium text-gray-600">받은 평가</p>
+              <p className="mt-2 text-3xl font-bold text-gray-900">{totalReceived}</p>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-sm font-medium text-gray-600">작성한 평가</p>
+              <p className="mt-2 text-3xl font-bold text-gray-900">{totalGiven}</p>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-sm font-medium text-gray-600">평균 점수</p>
+              <p className="mt-2 text-3xl font-bold text-gray-900">
+                {avgScore > 0 ? avgScore.toFixed(2) : '-'}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-sm font-medium text-gray-600">인기도</p>
+              <p className="mt-2 text-3xl font-bold text-gray-900">
+                {popularityRating}
+                {popularityScore !== null && (
+                  <span className="ml-2 text-base font-normal text-gray-500">({popularityScore.toFixed(2)})</span>
+                )}
+              </p>
+            </div>
           </div>
-          <div className="rounded-lg border border-gray-200 bg-white p-4">
-            <p className="text-sm text-gray-600">작성한 평가</p>
-            <p className="mt-1 text-2xl font-bold text-gray-900">{totalGiven}</p>
-          </div>
-          <div className="rounded-lg border border-gray-200 bg-white p-4">
-            <p className="text-sm text-gray-600">평균 점수</p>
-            <p className="mt-1 text-2xl font-bold text-gray-900">
-              {avgScore > 0 ? avgScore.toFixed(2) : '-'}
-            </p>
-          </div>
-          <div className="rounded-lg border border-gray-200 bg-white p-4">
-            <p className="text-sm text-gray-600">인기도</p>
-            <p className="mt-1 text-2xl font-bold text-gray-900">
-              {popularityRating}
-              {popularityScore !== null && (
-                <span className="ml-1 text-sm text-gray-500">({popularityScore.toFixed(2)})</span>
-              )}
-            </p>
-          </div>
+
+          {/* Evaluation History */}
+          <EvaluationHistory
+            receivedEvaluations={receivedWithDetails}
+            givenEvaluations={givenWithDetails}
+          />
         </div>
-
-        {/* Evaluation History */}
-        <EvaluationHistory
-          receivedEvaluations={receivedWithDetails}
-          givenEvaluations={givenWithDetails}
-        />
       </div>
     </div>
   );

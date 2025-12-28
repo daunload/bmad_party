@@ -58,11 +58,11 @@ export function PartySearchFilters({
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="space-y-4">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="space-y-6">
         {/* Keyword Search */}
         <div>
-          <label htmlFor="keyword" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="keyword" className="mb-2 block text-sm font-semibold text-gray-900">
             키워드 검색
           </label>
           <input
@@ -72,21 +72,21 @@ export function PartySearchFilters({
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="제목, 설명, 카테고리로 검색"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+            className="input-modern"
           />
         </div>
 
         {/* Category and Location */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="category" className="mb-2 block text-sm font-semibold text-gray-900">
               카테고리
             </label>
             <select
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className="input-modern"
             >
               <option value="">전체</option>
               {categories.map((cat) => (
@@ -98,7 +98,7 @@ export function PartySearchFilters({
           </div>
 
           <div>
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="location" className="mb-2 block text-sm font-semibold text-gray-900">
               지역
             </label>
             <input
@@ -107,15 +107,15 @@ export function PartySearchFilters({
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="예: 서울, 강남구"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className="input-modern"
             />
           </div>
         </div>
 
         {/* Date Range */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label htmlFor="dateFrom" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="dateFrom" className="mb-2 block text-sm font-semibold text-gray-900">
               시작 날짜
             </label>
             <input
@@ -124,12 +124,12 @@ export function PartySearchFilters({
               value={dateFrom}
               onChange={(e) => setDateFrom(e.target.value)}
               min={today}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className="input-modern"
             />
           </div>
 
           <div>
-            <label htmlFor="dateTo" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="dateTo" className="mb-2 block text-sm font-semibold text-gray-900">
               종료 날짜
             </label>
             <input
@@ -138,18 +138,18 @@ export function PartySearchFilters({
               value={dateTo}
               onChange={(e) => setDateTo(e.target.value)}
               min={dateFrom || today}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className="input-modern"
             />
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex space-x-2">
+        <div className="flex gap-3 pt-2">
           <button
             type="button"
             onClick={handleSearch}
             disabled={isPending}
-            className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            className="btn-primary flex-1"
           >
             {isPending ? '검색 중...' : '검색'}
           </button>
@@ -157,7 +157,7 @@ export function PartySearchFilters({
             type="button"
             onClick={handleReset}
             disabled={isPending}
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
+            className="btn-secondary"
           >
             초기화
           </button>
